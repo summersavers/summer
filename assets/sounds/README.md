@@ -4,20 +4,28 @@ license terms and whatnot here. I'll also put them in the game
 credits!
 
 =========
-bloodmouthghost/log.wav : remixed from
+titlebgm.mp3 :
+Monkey Island Band" by Eric Matyas Soundimage.org
+https://creativecommons.org/licenses/by/3.0/
+
+=========
+bloodmouthghost/log.wav :
 https://freesound.org/people/pakasit21/sounds/132925/
 https://creativecommons.org/publicdomain/zero/1.0/
 
 ===========
-griff/log.wav : remixed from
+griff/log.wav :
 https://freesound.org/people/humanoide9000/sounds/466133/
 humanoide9000
 https://www.youtube.com/c/LuisHumanoide
 https://creativecommons.org/licenses/by/3.0/
 
 ===========
-kai/log.wav : remixed from
+kai/log.wav :
 https://freesound.org/people/Noxdl/sounds/204912/
 https://creativecommons.org/publicdomain/zero/1.0/
 
 ===========
+levi/log.wav:
+https://freesound.org/people/Nightlife999/sounds/144971/
+https://creativecommons.org/publicdomain/zero/1.0/
