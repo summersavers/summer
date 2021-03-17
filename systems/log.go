@@ -76,7 +76,7 @@ func (s *CombatLogSystem) New(w *ecs.World) {
 	}
 	s.line1.Scale = engo.Point{X: 0.2, Y: 0.2}
 	s.line1.SetZIndex(2)
-	s.line1.Position = engo.Point{X: 99, Y: 10}
+	s.line1.Position = engo.Point{X: 99, Y: 15}
 	w.AddEntity(&s.line1)
 	//line2
 	s.line2 = sprite{BasicEntity: ecs.NewBasic()}
@@ -86,7 +86,7 @@ func (s *CombatLogSystem) New(w *ecs.World) {
 	}
 	s.line2.Scale = engo.Point{X: 0.2, Y: 0.2}
 	s.line2.SetZIndex(2)
-	s.line2.Position = engo.Point{X: 99, Y: 10}
+	s.line2.Position = engo.Point{X: 99, Y: 25}
 	w.AddEntity(&s.line2)
 	//line3
 	s.line3 = sprite{BasicEntity: ecs.NewBasic()}
@@ -96,7 +96,7 @@ func (s *CombatLogSystem) New(w *ecs.World) {
 	}
 	s.line3.Scale = engo.Point{X: 0.2, Y: 0.2}
 	s.line3.SetZIndex(2)
-	s.line3.Position = engo.Point{X: 99, Y: 10}
+	s.line3.Position = engo.Point{X: 99, Y: 35}
 	w.AddEntity(&s.line3)
 
 	engo.Mailbox.Listen("CombatLogMessage", func(message engo.Message) {

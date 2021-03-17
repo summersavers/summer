@@ -18,7 +18,7 @@ func (MoveMessage) Type() string {
 type MoveComponent struct {
 	Elapsed   float32
 	MovePhase int
-	MoveFunc  func(s *MoveSystem, ent moveEntity, dt float32)
+	MoveFunc  func(s *MoveSystem, ent *moveEntity, dt float32)
 }
 
 func (c *MoveComponent) GetMoveComponent() *MoveComponent {
@@ -36,8 +36,8 @@ type moveEntity struct {
 	*MoveComponent
 }
 
-var moves = map[string]func(s *MoveSystem, ent moveEntity, dt float32){
-	"Regular Attack": func(s *MoveSystem, ent moveEntity, dt float32) {
+var moves = map[string]func(s *MoveSystem, ent *moveEntity, dt float32){
+	"Regular Attack": func(s *MoveSystem, ent *moveEntity, dt float32) {
 		switch ent.MoveComponent.MovePhase {
 		case 0:
 			ent.CharacterComponent.CastTime = 0
@@ -103,7 +103,7 @@ func (s *MoveSystem) Remove(basic ecs.BasicEntity) {
 func (s *MoveSystem) Update(dt float32) {
 	for _, e := range s.entities {
 		if e.MoveComponent.MoveFunc != nil {
-			e.MoveComponent.MoveFunc(s, e, dt)
+			e.MoveComponent.MoveFunc(s, &e, dt)
 		}
 	}
 }

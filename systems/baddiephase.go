@@ -24,9 +24,10 @@ type Phase struct {
 }
 
 type BaddieAbility struct {
-	Weight      int
-	LogMessages []string
-	Times       []float32
+	Weight            int
+	LogMessages       []string
+	Times             []float32
+	AbilityAnimations []int
 }
 
 func (c *BaddieComponent) GetBaddieComponent() *BaddieComponent {
@@ -40,7 +41,6 @@ type BaddieFace interface {
 type BaddiePhaseAble interface {
 	BaddieFace
 	common.BasicFace
-	common.RenderFace
 }
 
 type NotBaddiePhaseComponent struct{}
@@ -53,46 +53,66 @@ type NotBaddiePhaseAble interface {
 	GetNotBaddiePhaseComponent() *NotBaddiePhaseComponent
 }
 
-type BaddiePhaseMessage struct {
-	ID        uint64
-	NewSprite common.Drawable
-}
-
-func (m BaddiePhaseMessage) Type() string {
-	return "BaddiePhaseMessage"
-}
-
 type baddiePhaseEntity struct {
 	*ecs.BasicEntity
-	*common.RenderComponent
 	*BaddieComponent
 }
 
 type BaddiePhaseSystem struct {
-	entities []baddiePhaseEntity
+	entities      []baddiePhaseEntity
+	baddiesprites []*sprite
+
+	w *ecs.World
 }
 
 func (s *BaddiePhaseSystem) New(w *ecs.World) {
-	engo.Mailbox.Listen("BaddiePhaseMessage", func(message engo.Message) {
-		msg, ok := message.(BaddiePhaseMessage)
-		if !ok {
-			return
-		}
-		for _, e := range s.entities {
-			if e.ID() == msg.ID {
-				e.Drawable = msg.NewSprite
-			}
-		}
-	})
+	s.w = w
 }
 
-func (s *BaddiePhaseSystem) Add(basic *ecs.BasicEntity, render *common.RenderComponent, bp *BaddieComponent) {
-	s.entities = append(s.entities, baddiePhaseEntity{basic, render, bp})
+func (s *BaddiePhaseSystem) reposition() {
+	var positions []engo.Point
+	switch len(s.entities) {
+	case 1:
+		positions = append(positions, engo.Point{X: 320, Y: 130})
+	case 2:
+		positions = append(positions, engo.Point{X: 320, Y: 130})
+		positions = append(positions, engo.Point{X: 320, Y: 130})
+	case 3:
+		positions = append(positions, engo.Point{X: 320, Y: 130})
+		positions = append(positions, engo.Point{X: 320, Y: 130})
+		positions = append(positions, engo.Point{X: 320, Y: 130})
+	case 4:
+		positions = append(positions, engo.Point{X: 320, Y: 130})
+		positions = append(positions, engo.Point{X: 320, Y: 130})
+		positions = append(positions, engo.Point{X: 320, Y: 130})
+		positions = append(positions, engo.Point{X: 320, Y: 130})
+	}
+	for k, position := range positions {
+		s.baddiesprites[k].SetCenter(position)
+	}
+}
+
+func (s *BaddiePhaseSystem) Add(basic *ecs.BasicEntity, bp *BaddieComponent) {
+	s.entities = append(s.entities, baddiePhaseEntity{basic, bp})
+	spr := sprite{BasicEntity: ecs.NewBasic()}
+	spr.Drawable = bp.Spritesheet.Drawable(0)
+	spr.Width = spr.Drawable.Width()
+	spr.Height = spr.Drawable.Height()
+	spr.SetZIndex(2)
+	s.w.AddEntity(&spr)
+	for _, sys := range s.w.Systems() {
+		switch system := sys.(type) {
+		case *TargetSystem:
+			system.Add(&spr.BasicEntity, &spr.RenderComponent, bp)
+		}
+	}
+	s.baddiesprites = append(s.baddiesprites, &spr)
+	s.reposition()
 }
 
 func (s *BaddiePhaseSystem) AddByInterface(i ecs.Identifier) {
 	a := i.(BaddiePhaseAble)
-	s.Add(a.GetBasicEntity(), a.GetRenderComponent(), a.GetBaddieComponent())
+	s.Add(a.GetBasicEntity(), a.GetBaddieComponent())
 }
 
 func (s *BaddiePhaseSystem) Remove(basic ecs.BasicEntity) {
@@ -105,7 +125,9 @@ func (s *BaddiePhaseSystem) Remove(basic ecs.BasicEntity) {
 	}
 	if delete >= 0 {
 		s.entities = append(s.entities[:delete], s.entities[delete+1:]...)
+		s.baddiesprites = append(s.baddiesprites[:delete], s.baddiesprites[delete+1:]...)
 	}
+	s.reposition()
 }
 
 func (s *BaddiePhaseSystem) Update(dt float32) {}

@@ -27,8 +27,6 @@ type audio struct {
 
 type baddie struct {
 	ecs.BasicEntity
-	common.SpaceComponent
-	common.RenderComponent
 	systems.BaddieComponent
 }
 

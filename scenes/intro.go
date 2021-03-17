@@ -125,12 +125,12 @@ func (*IntroScene) Setup(u engo.Updater) {
 	bg.Drawable = shaders.ShaderDrawable{}
 	bg.SetShader(shaders.CoolShader)
 	w.AddEntity(&bg)
-	bgm := audio{BasicEntity: ecs.NewBasic()}
-	bgmPlayer, _ := common.LoadedPlayer(files[41])
-	bgm.AudioComponent = common.AudioComponent{Player: bgmPlayer}
-	bgmPlayer.Repeat = true
-	bgmPlayer.Play()
-	w.AddEntity(&bgm)
+	// bgm := audio{BasicEntity: ecs.NewBasic()}
+	// bgmPlayer, _ := common.LoadedPlayer(files[41])
+	// bgm.AudioComponent = common.AudioComponent{Player: bgmPlayer}
+	// bgmPlayer.Repeat = true
+	// bgmPlayer.Play()
+	// w.AddEntity(&bgm)
 	// BACKGROUNDS />
 
 	// < BloodmouthGhost
@@ -142,8 +142,6 @@ func (*IntroScene) Setup(u engo.Updater) {
 	//    sounds />
 	//    < sprite
 	bmg := baddie{BasicEntity: ecs.NewBasic()}
-	bmg.SetZIndex(2)
-	bmg.SetCenter(engo.Point{X: 320, Y: 130})
 	bmg.BaddieComponent = systems.BaddieComponent{
 		Name:         "Blood-Mouthed Ghost!",
 		Phases:       make(map[string]systems.Phase),
@@ -159,18 +157,7 @@ func (*IntroScene) Setup(u engo.Updater) {
 		URL:  files[0],
 	}
 	bmg.Font.CreatePreloaded()
-	bmg.Drawable = bmg.Spritesheet.Drawable(0)
-	bmg.Width = bmg.Drawable.Width()
-	bmg.Height = bmg.Drawable.Height()
 	w.AddEntity(&bmg)
-
-	for _, sys := range w.Systems() {
-		switch system := sys.(type) {
-		case *systems.TargetSystem:
-			system.Add(&bmg.BasicEntity, &bmg.RenderComponent, &bmg.BaddieComponent)
-		}
-	}
-	//    sprite />
 	// BloodmouthGhost />
 
 	//    < battlebox sprite sheet

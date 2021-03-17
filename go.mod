@@ -8,6 +8,7 @@ require (
 	github.com/EngoEngine/gl v1.0.11
 	github.com/Noofbiz/pixelshader v0.0.0-20200807183531-e0439b7ebf4b
 	github.com/alecthomas/gocyclo v0.0.0-20150208221726-aa8f8b160214 // indirect
+	github.com/davecgh/go-spew v1.1.1
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200707082815-5321531c36a2
 	github.com/hajimehoshi/oto v0.6.3 // indirect
 	github.com/kisielk/gotool v1.0.0 // indirect

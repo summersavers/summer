@@ -14,6 +14,14 @@ func (cursorChangeMessage) Type() string {
 	return "Cursor Change Message"
 }
 
+type RemoveCursorMessage struct {
+	Ent ecs.BasicEntity
+}
+
+func (RemoveCursorMessage) Type() string {
+	return "Remove Cursor Message"
+}
+
 type CursorSetMessage struct {
 	Index int
 }
@@ -72,6 +80,13 @@ func (s *CursorSystem) New(w *ecs.World) {
 			return
 		}
 		s.setPointer(m.Index)
+	})
+	engo.Mailbox.Listen("Remove Cursor Message", func(msg engo.Message) {
+		m, ok := msg.(RemoveCursorMessage)
+		if !ok {
+			return
+		}
+		s.Remove(m.Ent)
 	})
 }
 
